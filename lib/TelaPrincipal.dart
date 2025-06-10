@@ -15,6 +15,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         child: Scaffold(
           backgroundColor: Color(0xFFF6FBF7),
           appBar: buildAppBar(),
+          body: buildBody(),
           //body: buildListView(),
         ),
     );
@@ -25,30 +26,35 @@ buildAppBar() {
   return AppBar(
     centerTitle: true,
     backgroundColor: Color(0xFF006A71),
-    actions: [
 
-      Icon(
-        Icons.person_4_rounded,
-        color: Colors.black,
-        size: 36,
-      ),
-      Icon(
-        Icons.list,
-        color: Colors.black,
-        size: 36,
-      ),
-    ],
-    title: Text(
-      'App Name',
-        style: TextStyle(
-          fontSize: 26,
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Icon(
+          Icons.person_4_rounded,
           color: Colors.black,
-          fontWeight: FontWeight.w500,
+          size: 36,
         ),
-      ),
-    );
+
+        Text(
+          'App Name',
+          style: TextStyle(
+            fontSize: 26,
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+
+        Icon(
+          Icons.list,
+          color: Colors.black,
+          size: 36,
+        ),
+      ],
+    ),
+  );
 }
 
-buildAppBarContainer() {
+buildBody() {
 
 }

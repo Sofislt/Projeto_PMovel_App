@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'TelaPrincipal.dart';
 
-void main() {
+void main(){
   runApp(
       MaterialApp(
         home: TelaPrincipal(),
-      )
+      ),
   );
 }
