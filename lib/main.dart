@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'TelaPrincipal.dart';
+import 'menuAvatar.dart';
 
 void main() {
   runApp(
       MaterialApp(
-        home: TelaPrincipal(),
-      )
+        debugShowCheckedModeBanner: false,
+        home: menuAvatar(),
+      ),
   );
 }
