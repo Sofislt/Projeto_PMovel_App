@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'TelaPrincipal.dart';
+import 'package:projetoctozcalixto/HotelApp.dart';
+import 'package:projetoctozcalixto/main.dart';
+
 
 void main() {
   runApp(
-      MaterialApp(
-        home: TelaPrincipal(),
-      )
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: HotelApp(),
+    ),
   );
 }
