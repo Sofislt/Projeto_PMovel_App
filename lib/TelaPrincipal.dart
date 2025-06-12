@@ -12,12 +12,15 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-          backgroundColor: Color(0xFFF6FBF7),
-          appBar: buildAppBar(),
-          body: buildBody(),
-          //body: buildListView(),
-        ),
+      child: Scaffold(
+        backgroundColor: Color(0xFFF6FBF7),
+        appBar: buildAppBar(),
+        body: buildBody(), //body: buildListView(),
+        extendBody: true,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: buildFloatingActionButton(),
+        bottomNavigationBar: buildBottomAppBar(),
+      ),
     );
   }
 }
@@ -52,9 +55,56 @@ buildAppBar() {
         ),
       ],
     ),
+
+
   );
 }
 
 buildBody() {
 
+}
+
+buildFloatingActionButton() {
+  return FloatingActionButton(
+    onPressed: () {},
+    elevation: 0,
+    backgroundColor: Color(0xFF006A71),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(32.0),
+    ),
+    foregroundColor: Color(0xFF000000),
+    child: const Icon(
+      Icons.add,
+      size: 40.0,
+    ),
+  );
+}
+
+buildBottomAppBar() {
+  return BottomAppBar(
+    shape: const CircularNotchedRectangle(),
+    color: Color(0xFF006A71),
+    child: IconTheme(
+      data: IconThemeData(),
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              iconSize: 40.0,
+              onPressed: () {},
+              icon: Icon(Icons.home_filled),
+            ),
+            SizedBox(width: 24.0),
+            IconButton(
+              iconSize: 40.0,
+              onPressed: () {},
+              icon: Icon(Icons.bar_chart_rounded),
+            ),
+          ],
+        ),
+      ),
+    ),
+  );
 }
