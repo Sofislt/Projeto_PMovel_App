@@ -13,16 +13,16 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTabController(
-          length: 4,
-          child: Scaffold(
-            backgroundColor: Color(0xFFF6FBF7),
-            appBar: buildAppBar(),
-            body: buildBody(), //body: buildListView(),
-            extendBody: true,
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-            floatingActionButton: buildFloatingActionButton(),
-            bottomNavigationBar: buildBottomAppBar(),
-          ),
+        length: 4,
+        child: Scaffold(
+          backgroundColor: Color(0xFFF6FBF7),
+          appBar: buildAppBar(),
+          body: buildBody(), //body: buildListView(),
+          extendBody: true,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButton: buildFloatingActionButton(),
+          bottomNavigationBar: buildBottomAppBar(),
+        ),
       ),
     );
   }
@@ -83,9 +83,17 @@ buildBody() {
           ],
         ),
       ),
-      const Expanded(
+      Expanded(
         child: TabBarView(
           children: [
+            ListView(
+              padding: EdgeInsets.all(16.0),
+              children: [
+                ListTile(title: Text('Diário - Item 1')),
+                ListTile(title: Text('Diário - Item 2')),
+                ListTile(title: Text('Diário - Item 3')),
+              ],
+            ),
             Center(child: Text("Diário Conteúdo")),
             Center(child: Text("Semanal Conteúdo")),
             Center(child: Text("Mensal Conteúdo")),
