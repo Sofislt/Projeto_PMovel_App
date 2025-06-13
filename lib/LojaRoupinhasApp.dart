@@ -26,7 +26,7 @@ class LojaPage extends StatelessWidget {
           Card(
             child: Column(
               children: [
-                Image.asset('assets/vestido.jpg'),
+                Image.asset('assets/Vestido.jpg'),
                 Text('Vestido Encantado'),
                 Text('Um vestido mágico com brilho especial.'),
                 Text('R\$ 120'),
