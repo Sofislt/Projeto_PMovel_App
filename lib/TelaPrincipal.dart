@@ -12,14 +12,17 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color(0xFFF6FBF7),
-        appBar: buildAppBar(),
-        body: buildBody(), //body: buildListView(),
-        extendBody: true,
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: buildFloatingActionButton(),
-        bottomNavigationBar: buildBottomAppBar(),
+      child: DefaultTabController(
+          length: 4,
+          child: Scaffold(
+            backgroundColor: Color(0xFFF6FBF7),
+            appBar: buildAppBar(),
+            body: buildBody(), //body: buildListView(),
+            extendBody: true,
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: buildFloatingActionButton(),
+            bottomNavigationBar: buildBottomAppBar(),
+          ),
       ),
     );
   }
@@ -61,7 +64,37 @@ buildAppBar() {
 }
 
 buildBody() {
-
+  return Column(
+    children: [
+      Container(
+        color: Color(0xFF138990),
+        child: const TabBar(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.black,
+          indicator: const UnderlineTabIndicator(
+            borderSide: BorderSide(width: 2.0, color: Colors.white),
+            insets: EdgeInsets.fromLTRB(40.0, 0.0, 40.0, 13.0), // move up by reducing bottom inset
+          ),
+          tabs: [
+            Tab(text: 'Diário'),
+            Tab(text: 'Semanal'),
+            Tab(text: 'Mensal'),
+            Tab(text: 'Anual'),
+          ],
+        ),
+      ),
+      const Expanded(
+        child: TabBarView(
+          children: [
+            Center(child: Text("Diário Conteúdo")),
+            Center(child: Text("Semanal Conteúdo")),
+            Center(child: Text("Mensal Conteúdo")),
+            Center(child: Text("Anual Conteúdo")),
+          ],
+        ),
+      ),
+    ],
+  );
 }
 
 buildFloatingActionButton() {
