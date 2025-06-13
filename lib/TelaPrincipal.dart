@@ -89,6 +89,23 @@ buildBody() {
             ListView(
               padding: EdgeInsets.all(16.0),
               children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  margin: const EdgeInsets.only(top: 20.0,bottom: 40.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF006A71),// border color
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF006A71),// border color
+                    shape: BoxShape.circle,
+                  ),
+                ),
                 ListTile(title: Text('Diário - Item 1')),
                 ListTile(title: Text('Diário - Item 2')),
                 ListTile(title: Text('Diário - Item 3')),
