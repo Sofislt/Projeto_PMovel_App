@@ -12,41 +12,21 @@ class _menuAvatar extends State<menuAvatar> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: Color(0xFFF6FBF7),
-        appBar: buildAppBar(),
-        //body: buildListView(),
-        drawer: NavigationDrawer(),
-        body: Center(
-          child: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF006A71),
-                    Color(0xFF9ACBD0),
-                  ],
-                )
-            ),
+      child: DefaultTabController(
+          length: 4,
+          child: Scaffold(
+            backgroundColor: Color(0xFFF6FBF7),
+            appBar: buildAppBar(),
+            //body: buildListView(),
+            drawer: NavigationDrawer(),
+            body: buildBody(),
+            extendBody: true,
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: buildFloatingActionButton(),
+            bottomNavigationBar: buildBottomAppBar(),
           ),
-        ),
-        bottomNavigationBar: Container(
-          height: 60,
-          color: Color(0xFF005E65),
-          child: Padding(
-            padding:  EdgeInsets.only(top: 4.0, bottom: 4.0, left: 16, right: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(Icons.home, size: 37),
-                Icon(Icons.sports_esports, size: 37),
-                Icon(Icons.bar_chart, size: 37),
-              ],
-            ),
-          ),
-        ),
       ),
+
     );
   }
 }
@@ -93,13 +73,138 @@ buildAppBar() {
     //leading: IconButton(onPressed: () {}, icon: Icon(Icons.person_rounded),),
     centerTitle: true,
     backgroundColor: Color(0xFF005E65),
-    actions: [
-      IconButton(onPressed: () => NavigationDrawer, icon: Icon(
-        Icons.list,
-        color: Colors.black,
-        size: 36,
-      ),),
-    ],
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        SizedBox(
+          width: 0.1,
+        ),
+        Text(
+          'App Name',
+          style: TextStyle(
+            fontSize: 26,
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
 
+        Icon(
+          Icons.list,
+          color: Colors.black,
+          size: 36,
+        ),
+      ],
+    ),
+
+  );
+}
+
+
+
+buildBody() {
+  return Column(
+    children: [
+      Container(
+        color: Color(0xFF138990),
+        child: Column(
+          children: [
+            const TabBar(
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.black,
+              indicator: const UnderlineTabIndicator(
+                borderSide: BorderSide(width: 2.0, color: Colors.white),
+                insets: EdgeInsets.fromLTRB(40.0, 0.0, 40.0, 13.0), // move up by reducing bottom inset
+              ),
+              tabs: [
+                Tab(text: 'Diário'),
+                Tab(text: 'Semanal'),
+                Tab(text: 'Mensal'),
+                Tab(text: 'Anual'),
+              ],
+            ),
+          ],
+        )
+      ),
+      Expanded(
+        child: TabBarView(
+          children: [
+            ListView(
+              padding: EdgeInsets.all(16.0),
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  margin: const EdgeInsets.only(top: 20.0,bottom: 40.0),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF006A71),// border color
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: Color(0xFF006A71),// border color
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                ListTile(title: Text('Diário - Item 1')),
+                ListTile(title: Text('Diário - Item 2')),
+                ListTile(title: Text('Diário - Item 3')),
+              ],
+            ),
+            Center(child: Text("Diário Conteúdo")),
+            Center(child: Text("Semanal Conteúdo")),
+            Center(child: Text("Mensal Conteúdo")),
+            Center(child: Text("Anual Conteúdo")),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+buildFloatingActionButton() {
+  return FloatingActionButton(
+    onPressed: () {},
+    elevation: 0,
+    backgroundColor: Color(0xFF006A71),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(32.0),
+    ),
+    foregroundColor: Color(0xFF000000),
+    child: const Icon(
+      Icons.add,
+      size: 40.0,
+    ),
+  );
+}
+
+buildBottomAppBar() {
+  return BottomAppBar(
+    shape: const CircularNotchedRectangle(),
+    color: Color(0xFF006A71),
+    child: IconTheme(
+      data: IconThemeData(),
+      child: Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              iconSize: 40.0,
+              onPressed: () {},
+              icon: Icon(Icons.home_filled),
+            ),
+            SizedBox(width: 24.0),
+            IconButton(
+              iconSize: 40.0,
+              onPressed: () {},
+              icon: Icon(Icons.bar_chart_rounded),
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }
