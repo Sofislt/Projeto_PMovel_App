@@ -18,7 +18,8 @@ class _menuAvatar extends State<menuAvatar> {
             backgroundColor: Color(0xFFF6FBF7),
             appBar: buildAppBar(),
             //body: buildListView(),
-            drawer: NavigationDrawer(),
+            drawer: avatarNavigationDrawer(),
+            endDrawer: menuNavigationDrawer(),
             body: buildBody(),
             extendBody: true,
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -31,7 +32,7 @@ class _menuAvatar extends State<menuAvatar> {
   }
 }
 
-class NavigationDrawer extends StatelessWidget {
+class avatarNavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Drawer(
     backgroundColor: Color(0xFF9ACBD0),
@@ -68,38 +69,83 @@ class NavigationDrawer extends StatelessWidget {
   );
 }
 
+class menuNavigationDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Drawer(
+    backgroundColor: Color(0xFF9ACBD0),
+
+    child: SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[buildHeader(context), buildMenuItems(context)],
+      ),
+    ),
+  );
+  Widget buildHeader(BuildContext context) => Container();
+  Widget buildMenuItems(BuildContext context) => Container(
+    padding: const EdgeInsets.all(24),
+    child: Wrap(
+      runSpacing: 16,
+      children: [
+        ListTile(
+          leading: const Icon(Icons.person_rounded, color: Color(0xFFFFFFFF)),
+          title: const Text(
+            'Usuario',
+            style: TextStyle(color: Color(0xFFFFFFFF)),
+          ),
+          onTap: () {},
+        ),
+        const Divider(color: Color(0xFFFFFFFF)),
+        ListTile(
+          leading: const Icon(Icons.person_rounded, color: Color(0xFFFFFFFF)),
+          title: const Text(
+            'Frase diária',
+            style: TextStyle(color: Color(0xFFFFFFFF)),
+          ),
+          onTap: () {},
+        ),
+        const Divider(color: Color(0xFFFFFFFF)),
+        ListTile(
+          leading: const Icon(Icons.person_rounded, color: Color(0xFFFFFFFF)),
+          title: const Text(
+            'Configurações',
+            style: TextStyle(color: Color(0xFFFFFFFF)),
+          ),
+          onTap: () {},
+        ),
+        const Divider(color: Color(0xFFFFFFFF)),
+        ListTile(
+          leading: const Icon(
+            Icons.local_grocery_store,
+            color: Color(0xFFFFFFFF),
+          ),
+          title: const Text(
+            'Log out',
+            style: TextStyle(color: Color(0xFFFFFFFF)),
+          ),
+          onTap: () {},
+        ),
+        const Divider(color: Color(0xFFFFFFFF)),
+      ],
+    ),
+  );
+}
+
 buildAppBar() {
   return AppBar(
     //leading: IconButton(onPressed: () {}, icon: Icon(Icons.person_rounded),),
     centerTitle: true,
     backgroundColor: Color(0xFF005E65),
-    title: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: 0.1,
-        ),
-        Text(
-          'App Name',
-          style: TextStyle(
-            fontSize: 26,
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-
-        Icon(
-          Icons.list,
-          color: Colors.black,
-          size: 36,
-        ),
-      ],
+    title: Text(
+      'App Name',
+      style: TextStyle(
+        fontSize: 26,
+        color: Colors.black,
+        fontWeight: FontWeight.w800,
+      ),
     ),
-
   );
 }
-
-
 
 buildBody() {
   return Column(
