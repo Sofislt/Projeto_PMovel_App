@@ -57,11 +57,8 @@ class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Drawer(
     backgroundColor: Color(0xFF9ACBD0),
-    child: SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    child: ListView(
         children: <Widget>[buildHeader(context), buildMenuItems(context)],
-      ),
     ),
   );
   Widget buildHeader(BuildContext context) => Container();
