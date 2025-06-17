@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-
-class HotelApp extends StatelessWidget {
+class ConfigApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HotelScreen());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: ConfigScreen());
   }
 }
 
-class HotelScreen extends StatelessWidget {
+class ConfigScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -79,7 +78,7 @@ class NavigationDrawer extends StatelessWidget {
           ),
           onTap: () {},
         ),
-        const Divider(color: Color(0xFFFFFFFF)),
+         Divider(color: Color(0xFFFFFFFF)),
         ListTile(
           leading: const Icon(Icons.person_rounded, color: Color(0xFFFFFFFF)),
           title: const Text(
@@ -88,7 +87,7 @@ class NavigationDrawer extends StatelessWidget {
           ),
           onTap: () {},
         ),
-        const Divider(color: Color(0xFFFFFFFF)),
+        Divider(color: Color(0xFFFFFFFF)),
         ListTile(
           leading: const Icon(Icons.person_rounded, color: Color(0xFFFFFFFF)),
           title: const Text(
@@ -97,7 +96,7 @@ class NavigationDrawer extends StatelessWidget {
           ),
           onTap: () {},
         ),
-        const Divider(color: Color(0xFFFFFFFF)),
+        Divider(color: Color(0xFFFFFFFF)),
         ListTile(
           leading: const Icon(
             Icons.local_grocery_store,
@@ -109,7 +108,7 @@ class NavigationDrawer extends StatelessWidget {
           ),
           onTap: () {},
         ),
-        const Divider(color: Color(0xFFFFFFFF)),
+        Divider(color: Color(0xFFFFFFFF)),
       ],
     ),
   );

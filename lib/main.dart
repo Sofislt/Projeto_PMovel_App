@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:projetoctozcalixto/HotelApp.dart';
-import 'package:projetoctozcalixto/main.dart';
+import 'package:projetofelype/ConfigApp.dart';
 
 
 void main() {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HotelApp(),
+      home: ConfigApp(),
     ),
   );
 }
