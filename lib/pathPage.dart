@@ -22,6 +22,7 @@ class _PathPageState extends State<PathPage> {
                 width: 60,
                 height: 60,
                 margin: const EdgeInsets.only(top: 20.0,bottom: 40.0),
+
                 decoration: BoxDecoration(
                   color: Color(0xFF006A71),// border color
                   shape: BoxShape.circle,
@@ -39,6 +40,7 @@ class _PathPageState extends State<PathPage> {
               ListTile(title: Text('Diário - Item 2')),
               ListTile(title: Text('Diário - Item 3')),
               TaskCard(titulo: 'Ler o roteiro da feira literária', descricao: '17 páginas',),
+              TaskCard(titulo: 'Costurar saia jeans', descricao: '',),
             ],
           ),
           Center(child: Text("Diário Conteúdo")),

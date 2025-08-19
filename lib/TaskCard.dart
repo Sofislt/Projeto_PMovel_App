@@ -14,20 +14,24 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context){
     return Card(
       color: Color(0xFF006A71),
-      child: ListView(
-        children: [
-          buildText(
-            text: titulo,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-          buildText(
-            text: descricao,
-            fontSize: 16.0,
-            color: Colors.white,
-          ),
-        ],
+      child: Container(
+        width: 2,
+        height: 60,
+        child: Column(
+          children: [
+            buildText(
+              text: titulo,
+              fontSize: 17.0,
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+            ),
+            buildText(
+              text: descricao,
+              fontSize: 16.0,
+              color: Colors.white,
+            ),
+          ],
+        ),
       ),
     );
   }
