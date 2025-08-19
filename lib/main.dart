@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projetofelype/menuAvatar.dart';
+import 'package:projetofelype/pages/menuAvatar.dart';
 
 void main() {
   runApp(

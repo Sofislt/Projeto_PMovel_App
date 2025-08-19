@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'TaskCard.dart';
+import '../widgets/TaskCard.dart';
 
 class PathPage extends StatefulWidget {
   const PathPage({super.key});
