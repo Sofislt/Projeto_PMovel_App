@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../widgets/TaskCard.dart';
+import 'package:projetofelype/db/taskcard_dao.dart';
 
 class PathPage extends StatefulWidget {
   const PathPage({super.key});
@@ -10,6 +11,19 @@ class PathPage extends StatefulWidget {
 }
 
 class _PathPageState extends State<PathPage> {
+  List listaTaskCard = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  loadData() async {
+    listaTaskCard = await TaskCardDao().listarTaskCards();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
