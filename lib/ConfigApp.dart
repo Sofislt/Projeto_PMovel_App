@@ -25,7 +25,7 @@ class ConfigScreen extends StatelessWidget {
         ),
         appBar: AppBar(
           backgroundColor: Color(0xFF005E65),
-          leading: Icon(Icons.person, size: 35),
+          leading: Icon(Icons.person, size:35),
           actions: [],
         ),
         bottomNavigationBar: Container(
