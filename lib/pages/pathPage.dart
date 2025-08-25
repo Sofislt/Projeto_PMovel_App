@@ -31,12 +31,13 @@ class _PathPageState extends State<PathPage> {
         children: [
           ListView.builder(
             padding: EdgeInsets.all(16.0),
-            itemCount: Databas
-            buildTaskBullet();
-
-
-            TaskCard(titulo: 'Ler o roteiro da feira literária', descricao: '17 páginas',),
-            TaskCard(titulo: 'Costurar saia jeans', descricao: '',),
+            //buildTaskBullet(),
+            itemCount: listaTaskCard.length,
+            itemBuilder: (context, i) {
+              return TaskCard(
+                task: listaTaskCard[i],
+              );
+            }
           ),
           Center(child: Text("Diário Conteúdo")),
           Center(child: Text("Semanal Conteúdo")),

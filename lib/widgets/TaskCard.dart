@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projetofelype/domain/task.dart';
 
-class TaskCard extends StatelessWidget {
-  final String titulo;
-  final String? descricao;
+class TaskCard extends StatefulWidget {
+  Task task;
 
-  const TaskCard({
-    required this.titulo,
-    this.descricao,
+  TaskCard({
+    required this.task,
+    super.key,
   });
 
   @override
-  Widget build(BuildContext context){
+  State<TaskCard> createState() => _TaskcardState();
+}
+
+class _TaskcardState extends State<TaskCard> {
+  Task get task => widget.task;
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
       color: Color(0xFF006A71),
       child: Container(
@@ -20,13 +27,13 @@ class TaskCard extends StatelessWidget {
         child: Column(
           children: [
             buildText(
-              text: titulo,
+              text: widget.task.titulo,
               fontSize: 17.0,
               fontWeight: FontWeight.w600,
               color: Colors.white,
             ),
             buildText(
-              text: descricao,
+              text: widget.task.descricao,
               fontSize: 16.0,
               color: Colors.white,
             ),

@@ -1,13 +1,13 @@
-class TaskCard {
+class Task {
   late String titulo;
   late String descricao;
 
-  TaskCard ({
+  Task ({
     required this.titulo,
     required this.descricao,
   });
 
-  TaskCard.fromJson(Map<String, dynamic> json) {
+  Task.fromJson(Map<String, dynamic> json) {
     titulo = json['titulo'];
     descricao = json['descricao'];
   }
