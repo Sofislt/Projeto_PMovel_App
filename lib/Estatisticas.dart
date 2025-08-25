@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
-
 class Estatisticas extends StatefulWidget {
   const Estatisticas({super.key});
 
