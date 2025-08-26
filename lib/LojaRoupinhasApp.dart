@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class LojaRoupinhasApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,11 +20,11 @@ class LojaPage extends StatelessWidget {
       ),
       body: GridView.count(
         crossAxisCount: 2,
-        padding: EdgeInsets.all(16), // Espaçamento da grade da borda da tela
+        padding: EdgeInsets.all(16),
         children: [
           Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Borda mais arredondada
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
@@ -32,7 +33,7 @@ class LojaPage extends StatelessWidget {
                   Image.asset('assets/vestido.jpg',
                     width: 92,  // largura desejada em pixels
                     height: 92, // altura desejada em pixels
-                    fit: BoxFit.cover, // como a imagem deve se ajustar ao espaço
+                    fit: BoxFit.cover,
                   ),
                   Text(
                     'Vestido',
@@ -53,7 +54,7 @@ class LojaPage extends StatelessWidget {
           ),
           Card(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20), // Borda mais arredondada
+              borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
               padding: EdgeInsets.only(left: 16.0, right: 16.0),
