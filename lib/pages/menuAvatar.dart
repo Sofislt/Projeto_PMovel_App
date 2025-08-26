@@ -173,44 +173,6 @@ buildBody() {
           )
       ),
       PathPage(),
-      /*CHAMAR O PATHPAGE*/
-      /*Expanded(
-        child: TabBarView(
-          children: [
-            ListView(
-              padding: EdgeInsets.all(16.0),
-              children: [
-                Container(
-                  width: 60,
-                  height: 60,
-                  margin: const EdgeInsets.only(top: 20.0,bottom: 40.0),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF006A71),// border color
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF006A71),// border color
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                ListTile(title: Text('Diário - Item 1')),
-                ListTile(title: Text('Diário - Item 2')),
-                ListTile(title: Text('Diário - Item 3')),
-                TaskCard(titulo: 'Ler o roteiro da feira literária', descricao: '17 páginas',),
-              ],
-            ),
-            Center(child: Text("Diário Conteúdo")),
-            Center(child: Text("Semanal Conteúdo")),
-            Center(child: Text("Mensal Conteúdo")),
-            Center(child: Text("Anual Conteúdo")),
-          ],
-        ),
-      ),
-      */
     ],
   );
 }
@@ -256,71 +218,6 @@ buildBottomAppBar() {
           ],
         ),
       ),
-    ),
-  );
-}
-
-class TaskCard extends StatelessWidget {
-  final String titulo;
-  final String? descricao;
-
-  const TaskCard({
-    required this.titulo,
-    this.descricao,
-  });
-
-  @override
-  Widget build(BuildContext context){
-    return Card(
-      color: Color(0xFF006A71),
-      child: ListView(
-        children: [
-          buildText(
-            text: titulo,
-            fontSize: 17.0,
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-          ),
-          buildText(
-            text: descricao,
-            fontSize: 16.0,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/*buildTaskCard () {
-  return Card(
-    color: Color(0xFF006A71),
-    child: ListView(
-      children: [
-        buildText(
-          text: 'Ler o roteiro da feira literária',
-          fontSize: 17.0,
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-        ),
-        buildText(
-          text: '17 páginas',
-          fontSize: 16.0,
-          color: Colors.white,
-        ),
-      ],
-    ),
-  );
-}*/
-
-
-buildText({required text, color, fontSize, fontWeight}) {
-  return Text(
-    text,
-    style: GoogleFonts.inter(
-      color: color,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
     ),
   );
 }

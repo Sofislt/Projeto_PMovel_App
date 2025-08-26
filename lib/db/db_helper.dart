@@ -5,9 +5,9 @@ import 'dart:async';
 class DBHelper {
   Future<Database> initDB() async {
     String path = await getDatabasesPath();
-    String dbName = 'airbnb.db';
+    String dbName = 'mare.db';
 
-    // C:/aqrquivos/jkdahsdja/airbnb.db
+    // C:/aqrquivos/caminhoDoBanco/mare.db
     String dbPath = join(path, dbName);
     Database database = await openDatabase(
       dbPath,
