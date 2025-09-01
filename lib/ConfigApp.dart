@@ -1,7 +1,8 @@
-import 'dart:ui';
-
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:projetofelype/card_frase.dart';
+import 'package:projetofelype/frase.dart';
+import 'package:projetofelype/frases_dao.dart';
 
 class ConfigApp extends StatelessWidget {
   const ConfigApp({super.key});
@@ -12,14 +13,55 @@ class ConfigApp extends StatelessWidget {
   }
 }
 
-class ConfigScreen extends StatelessWidget {
+class ConfigScreen extends StatefulWidget {
   const ConfigScreen({super.key});
+
+  @override
+  State<ConfigScreen> createState() => _ConfigScreenState();
+}
+
+class _ConfigScreenState extends State<ConfigScreen> {
+  List<Frase> listaFrases = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadData();
+  }
+
+  loadData() async {
+    final frases = await FrasesDao().listarFrases();
+    setState(() {
+      listaFrases = frases;
+    });
+  }
+
+  void _showRandomFrase() {
+    if (listaFrases.isNotEmpty) {
+      final random = Random();
+      final index = random.nextInt(listaFrases.length);
+      final Sorteada = listaFrases[index];
+
+      showDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Colors.transparent,
+        builder: (BuildContext context) {
+          return CardFrase(
+            frase: Sorteada,
+          );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      endDrawer: NavigationDrawer(),
+      endDrawer: NavigationDrawer(
+        onShowRandomFrase: _showRandomFrase,
+      ),
       body: buildAppBody(),
       appBar: buildAppBar(),
       bottomNavigationBar: buildBottomNavigationBar(),
@@ -42,7 +84,12 @@ buildAppBody() {
 }
 
 class NavigationDrawer extends StatelessWidget {
-  const NavigationDrawer({super.key});
+  VoidCallback onShowRandomFrase;
+
+  NavigationDrawer({
+    required this.onShowRandomFrase,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) => Drawer(
@@ -71,27 +118,16 @@ class NavigationDrawer extends StatelessWidget {
             Divider(color: Color(0xFFFFFFFF)),
             ListTile(
               leading:
-                  const Icon(Icons.person_rounded, color: Color(0xFFFFFFFF)),
+                  const Icon(Icons.lightbulb_outline, color: Color(0xFFFFFFFF)),
               title: const Text(
                 'Frase motivacional',
                 style: TextStyle(color: Color(0xFFFFFFFF)),
               ),
-              onTap: () {
-                showDialog(
-                  context: context,
-                  barrierDismissible: true,
-                  barrierColor: Colors.transparent,
-                  builder: (BuildContext context) {
-                    return CardFrase(
-                    );
-                  },
-                );
-              },
+              onTap: onShowRandomFrase,
             ),
             Divider(color: Color(0xFFFFFFFF)),
             ListTile(
-              leading:
-                  const Icon(Icons.person_rounded, color: Color(0xFFFFFFFF)),
+              leading: const Icon(Icons.settings, color: Color(0xFFFFFFFF)),
               title: const Text(
                 'Configurações',
                 style: TextStyle(color: Color(0xFFFFFFFF)),
@@ -101,7 +137,7 @@ class NavigationDrawer extends StatelessWidget {
             Divider(color: Color(0xFFFFFFFF)),
             ListTile(
               leading: const Icon(
-                Icons.local_grocery_store,
+                Icons.logout,
                 color: Color(0xFFFFFFFF),
               ),
               title: const Text(
