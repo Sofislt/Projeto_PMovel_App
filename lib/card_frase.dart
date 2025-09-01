@@ -1,11 +1,12 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:projetofelype/frase.dart';
 
 class CardFrase extends StatefulWidget {
-  //Propriedade propriedade;
+  Frase frase;
 
   CardFrase({
-    //required this.propriedade,
+    required this.frase,
     super.key,
   });
 
@@ -14,13 +15,6 @@ class CardFrase extends StatefulWidget {
 }
 
 class _CardFraseState extends State<CardFrase> {
-  //String get urlImage => widget.urlImage;
-  //Propriedade get propriedade => widget.propriedade;
-
-  // String getUrlImage {
-  //   return widget.urlImage;
-  // }
-
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
@@ -29,7 +23,6 @@ class _CardFraseState extends State<CardFrase> {
         child: Stack(
           clipBehavior: Clip.none,
           children: [
-            // A caixa de diálogo
             AlertDialog(
               backgroundColor: Colors.white.withOpacity(0.9),
               elevation: 0,
@@ -40,16 +33,16 @@ class _CardFraseState extends State<CardFrase> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(height: 16),
-                  Text(
+                  const Text(
                     "Mensagem motivacional",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    "frase",
+                    widget.frase.frases,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontStyle: FontStyle.italic, height: 1.5),
