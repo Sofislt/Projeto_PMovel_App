@@ -10,7 +10,7 @@ class menuAvatar extends StatefulWidget {
 
 class _menuAvatar extends State<menuAvatar> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext  context) {
     return SafeArea(
       child: DefaultTabController(
         length: 4,
