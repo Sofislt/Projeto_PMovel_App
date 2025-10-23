@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:projetofelype/domain/task.dart';
+import 'package:projetofelype/Domain/task.dart';
 
 class TaskCard extends StatefulWidget {
-  Task task;
+  final Task task;
 
-  TaskCard({
+  const TaskCard({
     required this.task,
     super.key,
   });
 
   @override
-  State<TaskCard> createState() => _TaskcardState();
+  State<TaskCard> createState() => _TaskCardState();
 }
 
-class _TaskcardState extends State<TaskCard> {
+class _TaskCardState extends State<TaskCard> {
   Task get task => widget.task;
 
   @override
@@ -22,8 +22,6 @@ class _TaskcardState extends State<TaskCard> {
     return Card(
       color: Color(0xFF006A71),
       child: Container(
-        width: 2,
-        height: 60,
         child: Column(
           children: [
             buildText(
@@ -44,7 +42,12 @@ class _TaskcardState extends State<TaskCard> {
   }
 }
 
-buildText({required text, color, fontSize, fontWeight}) {
+buildText ({
+  required String text,
+  Color? color,
+  double? fontSize,
+  FontWeight? fontWeight,
+}) {
   return Text(
     text,
     style: GoogleFonts.inter(

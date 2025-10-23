@@ -1,4 +1,4 @@
-import 'package:projetofelype/domain/task.dart';
+import 'package:projetofelype/Domain/task.dart';
 import 'package:sqflite/sqflite.dart';
 import 'db_helper.dart';
 
@@ -14,10 +14,15 @@ class TaskCardDao {
 
     // ForEach
     for (var json in result) {
+
+      print(json);
       Task task = Task.fromJson(json);
+      print(task.titulo);
       listaTasks.add(task);
     }
 
+    print("RESULTADO SQL: $result");
+    print("LISTA TASKS LENGTH: ${listaTasks.length}");
     return listaTasks;
   }
 }

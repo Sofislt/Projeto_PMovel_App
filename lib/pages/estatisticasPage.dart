@@ -12,20 +12,9 @@ class _EstatisticasState extends State<Estatisticas> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          backgroundColor: const Color(0xFFF6FBF7),
-          appBar: buildAppBar(),
-          //body: buildListView(),
-          drawer: avatarNavigationDrawer(),
-          endDrawer: menuNavigationDrawer(),
-          body: buildStatisticsBody(),
-          extendBody: true,
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: buildFloatingActionButton(),
-          bottomNavigationBar: buildBottomAppBar(),
-        ),
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: buildStatisticsBody(),
       ),
     );
   }
