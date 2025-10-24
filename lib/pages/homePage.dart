@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projetofelype/db/taskcard_dao.dart';
+import 'package:projetofelype/api/tasks_api.dart';
 import 'package:projetofelype/Widgets/TaskCard.dart';
 import 'package:projetofelype/Domain/task.dart';
 
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   loadData() async {
-    futureListaTask = TaskCardDao().listarTaskCards();
+    futureListaTask = TasksApi().findAll();
   }
 
   @override
