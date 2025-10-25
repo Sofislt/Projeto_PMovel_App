@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'homePage.dart';
 import 'estatisticasPage.dart';
+import 'calendarPage.dart';
+import 'pomodoroPage.dart';
 
 class MainPageController extends StatefulWidget {
   const MainPageController({super.key});
@@ -17,6 +19,8 @@ class _MainPageControllerState extends State<MainPageController> {
   var pages = [
     HomePage(),
     Estatisticas(),
+    CalendarPage(),
+    PomodoroPage(),
   ];
 
   @override
@@ -124,6 +128,14 @@ class _MainPageControllerState extends State<MainPageController> {
         BottomNavigationBarItem(
           icon: Icon(Icons.bar_chart_rounded),
           label: "Estatísticas",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_month_sharp),
+          label: "Calendário",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.access_time_filled),
+          label: "Pomodoro",
         ),
       ],
     );

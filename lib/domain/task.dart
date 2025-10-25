@@ -8,8 +8,8 @@ class Task {
   });
 
   Task.fromJson(Map<String, dynamic> json) {
-    titulo = json['titulo'];
-    descricao = json['descricao'];
+    titulo = json['titulo'] ?? '';
+    descricao = json['descricao'] ?? '';
   }
 
   Map<String, dynamic> toJson() {

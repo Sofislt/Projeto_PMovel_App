@@ -42,6 +42,7 @@ dependencies:
   sqflite:
   path:
   dio:
+  table_calendar:
 
 dev_dependencies:
   flutter_test:
