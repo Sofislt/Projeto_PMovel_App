@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projetofelype/api/chart_api.dart';
+import 'package:projetofelype/Domain/chart.dart';
 
 class Estatisticas extends StatefulWidget {
   const Estatisticas({super.key});
@@ -9,6 +11,14 @@ class Estatisticas extends StatefulWidget {
 }
 
 class _EstatisticasState extends State<Estatisticas> {
+  late Future<Chart> futureChart;
+
+  @override
+  void initState() {
+    super.initState();
+    futureChart = ChartApi().get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -18,8 +28,8 @@ class _EstatisticasState extends State<Estatisticas> {
           backgroundColor: const Color(0xFFF6FBF7),
           appBar: buildAppBar(),
           //body: buildListView(),
-          drawer: avatarNavigationDrawer(),
-          endDrawer: menuNavigationDrawer(),
+          drawer: AvatarNavigationDrawer(),
+          endDrawer: MenuNavigationDrawer(),
           body: buildStatisticsBody(),
           extendBody: true,
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -31,7 +41,7 @@ class _EstatisticasState extends State<Estatisticas> {
   }
 }
 
-class avatarNavigationDrawer extends StatelessWidget {
+class AvatarNavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Drawer(
     backgroundColor: Color(0xFF9ACBD0),
@@ -68,7 +78,7 @@ class avatarNavigationDrawer extends StatelessWidget {
   );
 }
 
-class menuNavigationDrawer extends StatelessWidget { //aqui o
+class MenuNavigationDrawer extends StatelessWidget { //aqui o
   @override
   Widget build(BuildContext context) => Drawer(
     backgroundColor: Color(0xFF9ACBD0),
@@ -129,7 +139,7 @@ class menuNavigationDrawer extends StatelessWidget { //aqui o
   );
 }
 
-buildAppBar() {
+AppBar buildAppBar() {
   return AppBar(
     //leading: IconButton(onPressed: () {}, icon: Icon(Icons.person_rounded),),
     centerTitle: true,
@@ -145,7 +155,7 @@ buildAppBar() {
   );
 }
 
-buildFloatingActionButton() {
+FloatingActionButton buildFloatingActionButton() {
   return FloatingActionButton(
     onPressed: () {},
     elevation: 0,
@@ -161,7 +171,7 @@ buildFloatingActionButton() {
   );
 }
 
-buildBottomAppBar() {
+BottomAppBar buildBottomAppBar() {
   return BottomAppBar(
     shape: const CircularNotchedRectangle(),
     color: Color(0xFF006A71),
@@ -190,6 +200,35 @@ buildBottomAppBar() {
   );
 }
 
-buildStatisticsBody() {
+Widget buildStatisticsBody() {
 
+  var futureChart;
+  return FutureBuilder<Chart>(
+    future: futureChart,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      } else if (snapshot.hasError) {
+        return Center(child: Text('Erro: ${snapshot.error}'));
+      } else if (snapshot.hasData) {
+        final chart = snapshot.data!;
+        if (chart.url.isEmpty) {
+          return const Center(child: Text('Nenhuma imagem disponível.'));
+        }
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Image.network(
+              chart.url,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) =>
+              const Text('Erro ao carregar imagem.'),
+            ),
+          ),
+        );
+      } else {
+        return const Center(child: Text('Sem dados.'));
+      }
+    },
+  );
 }
