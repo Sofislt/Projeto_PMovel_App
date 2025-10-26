@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projetofelype/api/chart_api.dart';
-import 'package:projetofelype/Domain/chart.dart';
 
 class Estatisticas extends StatefulWidget {
-
   const Estatisticas({super.key});
 
   @override
@@ -12,14 +9,6 @@ class Estatisticas extends StatefulWidget {
 }
 
 class _EstatisticasState extends State<Estatisticas> {
-  late Future<Chart> futureChart;
-
-  @override
-  void initState() {
-    super.initState();
-    futureChart = ChartApi().get();
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -29,8 +18,8 @@ class _EstatisticasState extends State<Estatisticas> {
           backgroundColor: const Color(0xFFF6FBF7),
           appBar: buildAppBar(),
           //body: buildListView(),
-          drawer: AvatarNavigationDrawer(),
-          endDrawer: MenuNavigationDrawer(),
+          drawer: avatarNavigationDrawer(),
+          endDrawer: menuNavigationDrawer(),
           body: buildStatisticsBody(),
           extendBody: true,
           floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -40,96 +29,9 @@ class _EstatisticasState extends State<Estatisticas> {
       ),
     );
   }
-  AppBar buildAppBar () {
-    return AppBar(
-      //leading: IconButton(onPressed: () {}, icon: Icon(Icons.person_rounded),),
-      centerTitle: true,
-      backgroundColor: Color(0xFF005E65),
-      title: Text(
-        'App Name',
-        style: TextStyle(
-          fontSize: 26,
-          color: Colors.black,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-    );
-  }
-
-  FloatingActionButton buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: () {},
-      elevation: 0,
-      backgroundColor: Color(0xFF006A71),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
-      foregroundColor: Color(0xFF000000),
-      child: const Icon(Icons.add, size: 40.0),
-    );
-  }
-
-  BottomAppBar buildBottomAppBar() {
-    return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      color: Color(0xFF006A71),
-      child: IconTheme(
-        data: IconThemeData(),
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                iconSize: 40.0,
-                onPressed: () {},
-                icon: Icon(Icons.home_filled),
-              ),
-              SizedBox(width: 24.0),
-              IconButton(
-                iconSize: 40.0,
-                onPressed: () {},
-                icon: Icon(Icons.bar_chart_rounded),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildStatisticsBody() {
-
-    return FutureBuilder<Chart>(
-      future: futureChart,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Erro: ${snapshot.error}'));
-        } else if (snapshot.hasData) {
-          final chart = snapshot.data!;
-          if (chart.url.isEmpty) {
-            return const Center(child: Text('Nenhuma imagem disponível.'));
-          }
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Image.network(
-                chart.url,
-                fit: BoxFit.contain,
-                errorBuilder: (context, error, stackTrace) =>
-                const Text('Erro ao carregar imagem.'),
-              ),
-            ),
-          );
-        } else {
-          return const Center(child: Text('Sem dados.'));
-        }
-      },
-    );
-  }
 }
 
-class AvatarNavigationDrawer extends StatelessWidget {
+class avatarNavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Drawer(
     backgroundColor: Color(0xFF9ACBD0),
@@ -138,7 +40,7 @@ class AvatarNavigationDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           buildHeader(context),
-          buildMenuItems(context),
+          buildMenuItems(context)
         ],
       ),
     ),
@@ -166,7 +68,7 @@ class AvatarNavigationDrawer extends StatelessWidget {
   );
 }
 
-class MenuNavigationDrawer extends StatelessWidget { //aqui o
+class menuNavigationDrawer extends StatelessWidget { //aqui o
   @override
   Widget build(BuildContext context) => Drawer(
     backgroundColor: Color(0xFF9ACBD0),
@@ -286,4 +188,8 @@ buildBottomAppBar() {
       ),
     ),
   );
+}
+
+buildStatisticsBody() {
+
 }
