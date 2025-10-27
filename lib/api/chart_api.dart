@@ -1,18 +1,16 @@
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:http/http.dart' as http;
 import 'package:projetofelype/Domain/chart.dart';
 
 class ChartApi {
   Future<Chart> get() async {
     final headers = {
       'Content-Type': 'application/json',
-      'X-API-Key': 'APY0v17GfzPtm5fnnQmlYhVXeYM9cMp2Lg6Ffkp5CqjJsv7ut4XLd17wK4hfKllaLU7F',
+      'apy-token': 'APY0v17GfzPtm5fnnQmlYhVXeYM9cMp2Lg6Ffkp5CqjJsv7ut4XLd17wK4hfKllaLU7F',
     };
 
-    final url = Uri.https(
-      'api.apyhub.com',
-      '/generate/charts/pie/url',
-    );
+    final url = Uri.https('api.apyhub.com', '/generate/charts/pie/url');
 
     final payload = {
       "title": "Simple Pie Chart",
@@ -25,7 +23,7 @@ class ChartApi {
         {"value": 70, "label": "label e"},
         {"value": 25, "label": "label f"},
         {"value": 60, "label": "label g"},
-      ]
+      ],
     };
     final response = await http.post(url, headers: headers, body: jsonEncode(payload));
     if (response.statusCode == 200) {
