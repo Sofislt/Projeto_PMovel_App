@@ -1,4 +1,3 @@
-//i have modified the tela principal file, but it has the same problem:
 import 'package:flutter/material.dart';
 import 'homePage.dart';
 import 'estatisticasPage.dart';
@@ -31,11 +30,9 @@ class _MainPageControllerState extends State<MainPageController> {
           child: Scaffold(
             backgroundColor: Color(0xFFF6FBF7),
             appBar: buildAppBar(),
-            //body: buildListView(),
             drawer: avatarNavigationDrawer(),
             endDrawer: menuNavigationDrawer(),
             body: buildBody(),
-            /*body: pages[selectedIndex],*/
             extendBody: true,
             floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             floatingActionButton: buildFloatingActionButton(),
@@ -75,7 +72,7 @@ class _MainPageControllerState extends State<MainPageController> {
               },
 
               child: Container(
-                color: Colors.black.withOpacity(0.5), // translucent overlay
+                color: Colors.black, // translucent overlay
                 child: Center(
                   child: Container(
                     padding: EdgeInsets.all(24),
@@ -98,7 +95,11 @@ class _MainPageControllerState extends State<MainPageController> {
 
   buildFloatingActionButton() {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          showActions = true;
+        });
+      },
       elevation: 0,
       backgroundColor: Color(0xFF006A71),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),

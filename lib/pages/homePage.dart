@@ -93,7 +93,7 @@ buildListView(List<Task> listaTask) {
     itemCount: listaTask.length,
     itemBuilder: (context, i) {
       return TaskCard(
-          task: listaTask[i],
+        task: listaTask[i],
       );
     },
   );
