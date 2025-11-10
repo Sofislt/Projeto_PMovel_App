@@ -77,10 +77,7 @@ class _ConfigScreenState extends State<ConfigScreen> {
       barrierDismissible: true,
       barrierColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Dialog(
-          insetPadding: EdgeInsets.all(16),
-          backgroundColor: Colors.transparent,
-          child: FutureBuilder(
+        return FutureBuilder(
             future: Future.wait([
               FraseApi().findAll(),
               FrasesFakeApi().findAll(),
@@ -103,7 +100,6 @@ class _ConfigScreenState extends State<ConfigScreen> {
               }
               return SizedBox.shrink();
             },
-          ),
         );
       },
     );
