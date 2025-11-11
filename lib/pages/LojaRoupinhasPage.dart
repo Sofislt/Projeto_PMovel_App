@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import '../db/lojinha_dao.dart';
-
+import 'wishlistPage.dart';
 
 class LojaRoupinhasApp extends StatelessWidget {
   const LojaRoupinhasApp({super.key});
-
 
   @override
   Widget build(BuildContext context) {
@@ -15,28 +14,23 @@ class LojaRoupinhasApp extends StatelessWidget {
   }
 }
 
-
 class LojaPage extends StatefulWidget {
   const LojaPage({super.key});
-
 
   @override
   State<LojaPage> createState() => _LojaPageState();
 }
-
 
 class _LojaPageState extends State<LojaPage> {
   final dao = DaoAppPLoja();
   List<Map<String, dynamic>> produtos = [];
   bool carregando = true;
 
-
   @override
   void initState() {
     super.initState();
     carregarProdutos();
   }
-
 
   Future<void> carregarProdutos() async {
     final lista = await dao.getProdutosLocal();
@@ -46,8 +40,8 @@ class _LojaPageState extends State<LojaPage> {
     });
   }
 
-
   Future<void> sincronizarComAPI() async {
+    setState(() => carregando = true);
     await dao.sincronizarProdutos();
     await carregarProdutos();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -55,18 +49,23 @@ class _LojaPageState extends State<LojaPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Loja de Roupinhas',
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Loja de Roupinhas'),
         backgroundColor: const Color(0xFF006A71),
         actions: [
           IconButton(
             icon: const Icon(Icons.sync),
             onPressed: sincronizarComAPI,
+          ),
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const WishlistPage()),
+            ),
           ),
         ],
       ),
@@ -84,46 +83,66 @@ class _LojaPageState extends State<LojaPage> {
         ),
         itemBuilder: (context, index) {
           final produto = produtos[index];
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: produto['imagem']
-                          ?.toString()
-                          .startsWith('http') ==
-                          true
-                          ? Image.network(produto['imagem'],
-                          fit: BoxFit.cover)
-                          : Image.asset(
-                          produto['imagem'] ??
-                              'assets/roupa.png',
-                          fit: BoxFit.cover),
-                    ),
+          return FutureBuilder<bool>(
+              future: dao.isFavorito(produto['id']),
+              builder: (context, snapshot) {
+                final isFav = snapshot.data ?? false;
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  const SizedBox(height: 8),
-                  Text(produto['nome'] ?? 'Produto',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold)),
-                  Text(produto['descricao'] ?? '',
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 12)),
-                  Text(
-                    'R\$ ${produto['preco'].toStringAsFixed(2)}',
-                    style: const TextStyle(
-                        color: Colors.green,
-                        fontWeight: FontWeight.w800),
+                  child: Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius:
+                              const BorderRadius.vertical(
+                                  top: Radius.circular(20)),
+                              child: Image.network(
+                                produto['imagem'],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            produto['nome'] ?? '',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ),
+                          Text(
+                            'R\$ ${produto['preco'].toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: IconButton(
+                          icon: Icon(
+                            isFav
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color:
+                            isFav ? Colors.pink : Colors.grey[400],
+                          ),
+                          onPressed: () async {
+                            await dao.toggleFavorito(produto['id']);
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          );
+                );
+              });
         },
       ),
       floatingActionButtonLocation:
@@ -141,16 +160,10 @@ class _LojaPageState extends State<LojaPage> {
           children: const [
             Icon(Icons.home_filled, size: 40, color: Colors.white),
             SizedBox(width: 24),
-            Icon(Icons.bar_chart_rounded, size: 40, color: Colors.white),
+            Icon(Icons.favorite, size: 40, color: Colors.white),
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
-
-

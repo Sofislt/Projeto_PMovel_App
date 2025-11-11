@@ -12,10 +12,13 @@ class DaoAppPLoja {
 
       for (var p in produtos) {
         await dbHelper.inserirProduto({
-          'nome': p['title'],
-          'descricao': p['description'],
-          'preco': p['price'],
-          'imagem': p['image'],
+          'nome': p['nome'],
+          'descricao': p['descricao'],
+          'preco': p['preco'],
+          'categoria': p['categoria'],
+          'imagem': p['imagem'],
+          'nota': p['avaliacao']?['nota'] ?? 0.0,
+          'votos': p['avaliacao']?['votos'] ?? 0,
         });
       }
 
@@ -27,5 +30,19 @@ class DaoAppPLoja {
 
   Future<List<Map<String, dynamic>>> getProdutosLocal() async {
     return await dbHelper.getProdutos();
+  }
+
+  // ---------- FAVORITOS ----------
+  Future<void> toggleFavorito(int produtoId) async {
+    final isFav = await dbHelper.isFavorito(produtoId);
+    if (isFav) {
+      await dbHelper.removerDesejo(produtoId);
+    } else {
+      await dbHelper.adicionarDesejo(produtoId);
+    }
+  }
+
+  Future<bool> isFavorito(int produtoId) async {
+    return await dbHelper.isFavorito(produtoId);
   }
 }

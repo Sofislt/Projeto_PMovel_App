@@ -8,14 +8,11 @@ class DBHelper {
     String dbName = 'mare.db';
     String dbPath = join(path, dbName);
 
-    Database database = await openDatabase(
+    return await openDatabase(
       dbPath,
-      version: 1,
+      version: 2,
       onCreate: onCreate,
     );
-
-    print("Banco de dados criado em: $dbPath");
-    return database;
   }
 
   Future<void> onCreate(Database db, int version) async {
@@ -25,49 +22,62 @@ class DBHelper {
         nome TEXT NOT NULL,
         descricao TEXT,
         preco REAL NOT NULL,
-        imagem TEXT
+        categoria TEXT,
+        imagem TEXT,
+        nota REAL,
+        votos INTEGER
       );
     ''');
 
-    await db.insert('Produto', {
-      'nome': 'Vestido Encantado',
-      'descricao': 'Um vestido mágico com brilho especial.',
-      'preco': 120.0,
-      'imagem': 'assets/Vestido.jpg'
-    });
-    await db.insert('Produto', {
-      'nome': 'Blusa Fashion',
-      'descricao': 'Sempre estiloso.',
-      'preco': 250.0,
-      'imagem': 'assets/camisa.jpg'
-    });
-    await db.insert('Produto', {
-      'nome': 'Jaqueta Jeans',
-      'descricao': 'Clássica e estilosa para qualquer ocasião.',
-      'preco': 180.0,
-      'imagem': 'assets/jaqueta.jpg'
-    });
-    await db.insert('Produto', {
-      'nome': 'Tênis Esportivo',
-      'descricao': 'Confortável para corridas e caminhadas.',
-      'preco': 300.0,
-      'imagem': 'assets/tenis.jpg'
-    });
+    await db.execute('''
+      CREATE TABLE Desejo (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        produtoId INTEGER,
+        FOREIGN KEY(produtoId) REFERENCES Produto(id)
+      );
+    ''');
   }
 
-  // --- Métodos CRUD para produtos ---
-  Future<void> inserirProduto(Map<String, dynamic> produto) async {
-    final db = await initDB();
-    await db.insert('Produto', produto);
-  }
-
+  // ---------------- PRODUTOS -----------------
   Future<void> limparProdutos() async {
     final db = await initDB();
     await db.delete('Produto');
   }
 
+  Future<void> inserirProduto(Map<String, dynamic> produto) async {
+    final db = await initDB();
+    await db.insert('Produto', produto,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
   Future<List<Map<String, dynamic>>> getProdutos() async {
     final db = await initDB();
     return await db.query('Produto');
+  }
+
+  // ---------------- WISHLIST -----------------
+  Future<void> adicionarDesejo(int produtoId) async {
+    final db = await initDB();
+    await db.insert('Desejo', {'produtoId': produtoId});
+  }
+
+  Future<void> removerDesejo(int produtoId) async {
+    final db = await initDB();
+    await db.delete('Desejo', where: 'produtoId = ?', whereArgs: [produtoId]);
+  }
+
+  Future<bool> isFavorito(int produtoId) async {
+    final db = await initDB();
+    final result = await db.query('Desejo',
+        where: 'produtoId = ?', whereArgs: [produtoId]);
+    return result.isNotEmpty;
+  }
+
+  Future<List<Map<String, dynamic>>> getDesejos() async {
+    final db = await initDB();
+    return await db.rawQuery('''
+      SELECT Produto.* FROM Produto
+      INNER JOIN Desejo ON Produto.id = Desejo.produtoId
+    ''');
   }
 }
