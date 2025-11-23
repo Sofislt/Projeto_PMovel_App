@@ -43,68 +43,70 @@ class _CalendarPageState extends State<CalendarPage> {
   }
 
   loadData() async {
-    futureListaHoliday = HolidaysApi().findByYear(selectedYear);
+    setState(() {
+      futureListaHoliday = HolidaysApi().findByYear(selectedYear.toString());
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: buildCalendarBody(today, _onDaySelected),
+        child: buildCalendarBody(today, _onDaySelected, futureListaHoliday),
     );
   }
 }
 
-buildCalendarBody(today, _onDaySelected) {
+buildCalendarBody(today, _onDaySelected, futureListaHoliday) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
-    child: Container(
-      child: ListView(
-        children: [
-          TableCalendar(
-            locale: "pt_BR",
-            rowHeight: 90,
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-              titleTextFormatter: (date, locale) {
-                final formatted = DateFormat('MMMM yyyy', locale).format(date);
-                return formatted.capitalizeEachWord();
-              }
-            ),
-            availableGestures: AvailableGestures.all,
-            selectedDayPredicate: (day)=> isSameDay(day, today),
-            daysOfWeekStyle: DaysOfWeekStyle(
-              weekdayStyle: const TextStyle(fontWeight: FontWeight.w500),
-              weekendStyle: const TextStyle(fontWeight: FontWeight.w500),
-              dowTextFormatter: (date, locale) {
-                final text = DateFormat.E(locale).format(date);
-                return text.capitalizeEachWord();
-              },
-            ),
-            focusedDay: today,
-            firstDay: DateTime.utc(2024, 1, 1),
-            lastDay: DateTime.utc(2044, 12, 31),
-            onDaySelected: _onDaySelected,
+    child: Column(
+      children: [
+        TableCalendar(
+          locale: "pt_BR",
+          //rowHeight: 90,
+          headerStyle: HeaderStyle(
+            formatButtonVisible: false,
+            titleCentered: true,
+            titleTextFormatter: (date, locale) {
+              final formatted = DateFormat('MMMM yyyy', locale).format(date);
+              return formatted.capitalizeEachWord();
+            }
           ),
-          Container(
-            child: FutureBuilder<List<Holiday>>(
-              future: futureListaHoliday,
-              builder: (context, snapshot) {
-                if(snapshot.hasData) {
-                  List<Holiday> lista = snapshot.requireData;
-                  return buildListView(lista);
-                }
-                return Center(child: CircularProgressIndicator());
-              }
-            ),
+          availableGestures: AvailableGestures.all,
+          selectedDayPredicate: (day)=> isSameDay(day, today),
+          daysOfWeekStyle: DaysOfWeekStyle(
+            weekdayStyle: const TextStyle(fontWeight: FontWeight.w500),
+            weekendStyle: const TextStyle(fontWeight: FontWeight.w500),
+            dowTextFormatter: (date, locale) {
+              final text = DateFormat.E(locale).format(date);
+              return text.capitalizeEachWord();
+            },
           ),
-      ],),
+          focusedDay: today,
+          firstDay: DateTime.utc(2024, 1, 1),
+          lastDay: DateTime.utc(2044, 12, 31),
+          onDaySelected: _onDaySelected,
+        ),
+        Expanded(
+          child: FutureBuilder<List<Holiday>>(
+            future: futureListaHoliday,
+            builder: (context, snapshot) {
+              if(snapshot.hasData) {
+                List<Holiday> lista = snapshot.requireData;
+                return buildListView(lista);
+              }
+              return Center(child: CircularProgressIndicator());
+            }
+          ),
+        ),
+      ],
     ),
   );
 }
 
 buildListView(List<Holiday> listaHoliday) {
   return ListView.builder(
+    padding: const EdgeInsets.all(16.0),
     itemCount: listaHoliday.length,
     itemBuilder: (context, i) {
       return HolidayCard(
