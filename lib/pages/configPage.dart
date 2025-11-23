@@ -64,7 +64,6 @@ class _ConfigScreenState extends State<ConfigScreen> {
         builder: (BuildContext context) {
           return CardFrase(
             frase: Sorteada,
-            fraseInfluente: SorteadaInfluente
           );
         },
       );

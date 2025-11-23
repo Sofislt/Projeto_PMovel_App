@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:projetofelype/card_frase.dart';
-import 'package:projetofelype/frase.dart';
-import 'package:projetofelype/frases_dao.dart';
+import 'package:projetofelype/Widgets/QuoteCard.dart';
+import 'package:projetofelype/Domain/frase.dart';
+import 'package:projetofelype/db/frase_dao.dart';
 
 class ConfigApp extends StatelessWidget {
   const ConfigApp({super.key});
