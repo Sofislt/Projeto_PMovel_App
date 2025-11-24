@@ -1,43 +1,44 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'pages/pathPage.dart';
+import 'homePage.dart';
+import 'estatisticasPage.dart';
+import 'calendarPage.dart';
+import 'pomodoroPage.dart';
 
-class telaPrincipal extends StatefulWidget {
-  const telaPrincipal({super.key});
+class MainPageController extends StatefulWidget {
+  const MainPageController({super.key});
 
   @override
-  State<telaPrincipal> createState() => _telaPrincipal();
+  State<MainPageController> createState() => _MainPageControllerState();
 }
 
-class _telaPrincipal extends State<telaPrincipal> {
+class _MainPageControllerState extends State<MainPageController> {
+  bool showActions = false;
   int selectedIndex = 0;
 
   var pages = [
-    PathPage(),
-    Center(child: Text('Estatísticas', style: TextStyle(fontSize: 32))),
+    HomePage(),
+    Estatisticas(),
+    CalendarPage(),
+    PomodoroPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: DefaultTabController(
-        length: 4,
-        child: Scaffold(
-          backgroundColor: Color(0xFFF6FBF7),
-          appBar: buildAppBar(),
-          //body: buildListView(),
-          drawer: avatarNavigationDrawer(),
-          endDrawer: menuNavigationDrawer(),
-          body: pages[selectedIndex],
-          extendBody: true,
-          floatingActionButtonLocation:
-          FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: buildFloatingActionButton(),
-          bottomNavigationBar: buildBottomNavigationBar(),
+        child: DefaultTabController(
+          length: 4,
+          child: Scaffold(
+            backgroundColor: Color(0xFFF6FBF7),
+            appBar: buildAppBar(),
+            drawer: avatarNavigationDrawer(),
+            endDrawer: menuNavigationDrawer(),
+            body: buildBody(),
+            extendBody: true,
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+            floatingActionButton: buildFloatingActionButton(),
+            bottomNavigationBar: buildBottomNavigationBar(),
+          ),
         ),
-      ),
     );
   }
 
@@ -58,42 +59,47 @@ class _telaPrincipal extends State<telaPrincipal> {
   }
 
   buildBody() {
-    return Column(
+    return Stack(
       children: [
-        Container(
-          color: Color(0xFF138990),
-          child: Column(
-            children: [
-              const TabBar(
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.black,
-                indicator: const UnderlineTabIndicator(
-                  borderSide: BorderSide(width: 2.0, color: Colors.white),
-                  insets: EdgeInsets.fromLTRB(
-                    40.0,
-                    0.0,
-                    40.0,
-                    13.0,
-                  ), // move up by reducing bottom inset
+        Positioned.fill(child: pages[selectedIndex]),
+        if(showActions)
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: (){
+                setState(() {
+                  showActions = false;
+                });
+              },
+
+              child: Container(
+                color: Colors.black, // translucent overlay
+                child: Center(
+                  child: Container(
+                    padding: EdgeInsets.all(24),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      'Adicionar nota',
+                      style: TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                  ),
                 ),
-                tabs: [
-                  Tab(text: 'Diário'),
-                  Tab(text: 'Semanal'),
-                  Tab(text: 'Mensal'),
-                  Tab(text: 'Anual'),
-                ],
               ),
-            ],
+            )
           ),
-        ),
-        PathPage(),
       ],
     );
   }
 
   buildFloatingActionButton() {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        setState(() {
+          showActions = true;
+        });
+      },
       elevation: 0,
       backgroundColor: Color(0xFF006A71),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32.0)),
@@ -105,11 +111,32 @@ class _telaPrincipal extends State<telaPrincipal> {
   buildBottomNavigationBar() {
     return BottomNavigationBar(
       currentIndex: selectedIndex,
+      onTap: (index) {
+        setState(() {
+          selectedIndex = index;
+        });
+      },
+      backgroundColor: Color(0xFF006A71),
+      unselectedItemColor: Colors.black45,
+      selectedItemColor: Colors.black,
+      showUnselectedLabels: true,
+      type: BottomNavigationBarType.fixed,
       items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: "Home"),
+        BottomNavigationBarItem(
+            icon: Icon(Icons.home_filled),
+            label: "Home"
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.bar_chart_rounded),
           label: "Estatísticas",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.calendar_month_sharp),
+          label: "Calendário",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.access_time_filled),
+          label: "Pomodoro",
         ),
       ],
     );
@@ -221,30 +248,3 @@ class menuNavigationDrawer extends StatelessWidget {
     ),
   );
 }
-
-/*
-    shape: const CircularNotchedRectangle(),
-    color: Color(0xFF006A71),
-    child: IconTheme(
-      data: IconThemeData(),
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              iconSize: 40.0,
-              onPressed: () {},
-              icon: Icon(Icons.home_filled),
-            ),
-            SizedBox(width: 24.0),
-            IconButton(
-              iconSize: 40.0,
-              onPressed: () {},
-              icon: Icon(Icons.bar_chart_rounded),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );*/
