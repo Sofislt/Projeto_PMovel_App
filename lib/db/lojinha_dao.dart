@@ -1,50 +1,48 @@
-import 'package:sqflite/sqflite.dart';
-import 'package:projetofelype/Widgets/ItemCard.dart';
-import 'db_helper.dart';
+import '../db/db_helper.dart';
+import '../serviceApi/serviceapi.dart';
 
-class CardLojaDao {
-  Future<List<CardLoja>> listarProdutos() async {
-    Database db = await DBHelper().initDB();
-    String sql = 'SELECT * FROM produto;';
-    var result = await db.rawQuery(sql);
+class DaoAppPLoja {
+  final dbHelper = DBHelper();
+  final apiService = ApiService();
 
-    List<CardLoja> listaProdutos = [];
+  Future<void> sincronizarProdutos() async {
+    try {
+      final produtos = await apiService.fetchAllProducts();
+      await dbHelper.limparProdutos();
 
-    await Future.delayed(const Duration(seconds: 2));
+      for (var p in produtos) {
+        await dbHelper.inserirProduto({
+          'nome': p['nome'],
+          'descricao': p['descricao'],
+          'preco': p['preco'],
+          'categoria': p['categoria'],
+          'imagem': p['imagem'],
+          'nota': p['avaliacao']?['nota'] ?? 0.0,
+          'votos': p['avaliacao']?['votos'] ?? 0,
+        });
+      }
 
-    for (var json in result) {
-      CardLoja produto = CardLoja.fromJson(json);
-      listaProdutos.add(produto);
+      print('Produtos sincronizados com sucesso!');
+    } catch (e) {
+      print('Erro ao sincronizar produtos: $e');
     }
-
-    return listaProdutos;
-  }
-}
-
-class DesejoDAO {
-  late int produtoId;
-  DesejoDAO({required this.produtoId});
-  Map<String, dynamic> toJson() {
-    return {
-      'produtoId': produtoId,
-    };
-  }
-}
-
-class DesejoDao {
-  Future<void> adicionar(DesejoDAO d) async {
-    final db = await DBHelper().initDB();
-    await db.insert('desejo', d.toJson());
   }
 
-  Future<void> remover(int produtoId) async {
-    final db = await DBHelper().initDB();
-    await db.delete('desejo', where: 'produtoId = ?', whereArgs: [produtoId]);
+  Future<List<Map<String, dynamic>>> getProdutosLocal() async {
+    return await dbHelper.getProdutos();
   }
 
-  Future<List<int>> listarTodos() async {
-    final db = await DBHelper().initDB();
-    final result = await db.rawQuery('SELECT produtoId FROM desejo');
-    return result.map((e) => e['produtoId'] as int).toList();
+  // ---------- FAVORITOS ----------
+  Future<void> toggleFavorito(int produtoId) async {
+    final isFav = await dbHelper.isFavorito(produtoId);
+    if (isFav) {
+      await dbHelper.removerDesejo(produtoId);
+    } else {
+      await dbHelper.adicionarDesejo(produtoId);
+    }
+  }
+
+  Future<bool> isFavorito(int produtoId) async {
+    return await dbHelper.isFavorito(produtoId);
   }
 }

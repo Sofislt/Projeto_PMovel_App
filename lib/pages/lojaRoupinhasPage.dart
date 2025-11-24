@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import '../db/lojinha_dao.dart';
+import 'wishlistPage.dart';
 
 class LojaRoupinhasApp extends StatelessWidget {
+  const LojaRoupinhasApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -10,139 +14,156 @@ class LojaRoupinhasApp extends StatelessWidget {
   }
 }
 
-class LojaPage extends StatelessWidget {
+class LojaPage extends StatefulWidget {
+  const LojaPage({super.key});
+
+  @override
+  State<LojaPage> createState() => _LojaPageState();
+}
+
+class _LojaPageState extends State<LojaPage> {
+  final dao = DaoAppPLoja();
+  List<Map<String, dynamic>> produtos = [];
+  bool carregando = true;
+
+  @override
+  void initState() {
+    super.initState();
+    carregarProdutos();
+  }
+
+  Future<void> carregarProdutos() async {
+    final lista = await dao.getProdutosLocal();
+    setState(() {
+      produtos = lista;
+      carregando = false;
+    });
+  }
+
+  Future<void> sincronizarComAPI() async {
+    setState(() => carregando = true);
+    await dao.sincronizarProdutos();
+    await carregarProdutos();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Produtos atualizados!')),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Loja de Roupinhas', style: TextStyle(fontWeight: FontWeight.bold),),
-        backgroundColor: Color(0xFF006A71),
-      ),
-      body: GridView.count(
-        crossAxisCount: 2,
-        padding: EdgeInsets.all(16),
-        children: [
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0),
-              child: Column(
-                children: [
-                  Image.asset('assets/vestido.jpg',
-                    width: 92,  // largura desejada em pixels
-                    height: 92, // altura desejada em pixels
-                    fit: BoxFit.cover,
-                  ),
-                  Text(
-                    'Vestido',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Um vestido mágico com brilho especial.',
-                    style: TextStyle(fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'R\$ 120',
-                    style: TextStyle(color: Colors.green[800], fontWeight: FontWeight.w800),
-                  ),
-                ],
-              ),
-            ),
+        title: const Text('Loja de Roupinhas'),
+        backgroundColor: const Color(0xFF006A71),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.sync),
+            onPressed: sincronizarComAPI,
           ),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0),
-              child: Column(
-                children: [
-                  Image.asset('assets/chapeu.jpg',
-                    width: 92,  // largura desejada em pixels
-                    height: 92, // altura desejada em pixels
-                    fit: BoxFit.cover, // como a imagem deve se ajustar ao espaço
-                  ),
-                  Text(
-                    'Chapéu de praia',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'Um ótimo chapéu para ir à praia.',
-                    style: TextStyle(fontSize: 12),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text(
-                    'R\$ 30',
-                    style: TextStyle(color: Colors.green[800], fontWeight: FontWeight.w800),
-                  ),
-                ],
-              ),
+          IconButton(
+            icon: const Icon(Icons.favorite),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const WishlistPage()),
             ),
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: buildFloatingActionButton(),
-      bottomNavigationBar: buildBottomAppBar(),
-    );
-  }
-}
-
-buildText({required text, color, fontSize, fontWeight}) {
-  return Text(
-    text,
-    style: TextStyle(
-      color: color,
-      fontSize: fontSize,
-      fontWeight: fontWeight,
-    ),
-  );
-}
-
-buildFloatingActionButton() {
-  return FloatingActionButton(
-    onPressed: () {},
-    elevation: 0,
-    backgroundColor: Color(0xFF006A71),
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(32.0),
-    ),
-    foregroundColor: Color(0xFF000000),
-    child: const Icon(
-      Icons.add,
-      size: 40.0,
-    ),
-  );
-}
-
-buildBottomAppBar() {
-  return BottomAppBar(
-    shape: const CircularNotchedRectangle(),
-    color: Color(0xFF006A71),
-    child: IconTheme(
-      data: IconThemeData(),
-      child: Padding(
-        padding: const EdgeInsets.all(2.0),
+      body: carregando
+          ? const Center(child: CircularProgressIndicator())
+          : GridView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: produtos.length,
+        gridDelegate:
+        const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 16,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.75,
+        ),
+        itemBuilder: (context, index) {
+          final produto = produtos[index];
+          return FutureBuilder<bool>(
+              future: dao.isFavorito(produto['id']),
+              builder: (context, snapshot) {
+                final isFav = snapshot.data ?? false;
+                return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Stack(
+                    children: [
+                      Column(
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius:
+                              const BorderRadius.vertical(
+                                  top: Radius.circular(20)),
+                              child: Image.network(
+                                produto['imagem'],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            produto['nome'] ?? '',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ),
+                          Text(
+                            'R\$ ${produto['preco'].toStringAsFixed(2)}',
+                            style: const TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                        ],
+                      ),
+                      Positioned(
+                        top: 4,
+                        right: 4,
+                        child: IconButton(
+                          icon: Icon(
+                            isFav
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color:
+                            isFav ? Colors.pink : Colors.grey[400],
+                          ),
+                          onPressed: () async {
+                            await dao.toggleFavorito(produto['id']);
+                            setState(() {});
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              });
+        },
+      ),
+      floatingActionButtonLocation:
+      FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: sincronizarComAPI,
+        backgroundColor: const Color(0xFF006A71),
+        child: const Icon(Icons.add, size: 40),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        shape: const CircularNotchedRectangle(),
+        color: const Color(0xFF006A71),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            IconButton(
-              iconSize: 40.0,
-              onPressed: () {},
-              icon: Icon(Icons.home_filled),
-            ),
-            SizedBox(width: 24.0),
-            IconButton(
-              iconSize: 40.0,
-              onPressed: () {},
-              icon: Icon(Icons.bar_chart_rounded),
-            ),
+          children: const [
+            Icon(Icons.home_filled, size: 40, color: Colors.white),
+            SizedBox(width: 24),
+            Icon(Icons.favorite, size: 40, color: Colors.white),
           ],
         ),
       ),
-    ),
-  );
+    );
+  }
 }
