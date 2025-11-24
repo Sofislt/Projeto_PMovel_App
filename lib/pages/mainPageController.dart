@@ -12,6 +12,8 @@ import 'estatisticasPage.dart';
 import 'calendarPage.dart';
 import 'pomodoroPage.dart';
 
+import 'lojaRoupinhasPage.dart';
+
 class MainPageController extends StatefulWidget {
   const MainPageController({super.key});
 
@@ -275,7 +277,14 @@ class avatarNavigationDrawer extends StatelessWidget {
             'Loja de Cosméticos',
             style: TextStyle(color: Color(0xFFFFFFFF)),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LojaRoupinhasApp(),
+              ),
+            );
+          },
         ),
       ],
     ),

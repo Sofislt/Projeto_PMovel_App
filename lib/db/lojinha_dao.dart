@@ -1,8 +1,8 @@
-import '../db/db_helper.dart';
-import '../serviceApi/serviceapi.dart';
+import 'package:projetofelype/db/db_helper.dart';
+import 'package:projetofelype/api/service_api.dart';
 
 class DaoAppPLoja {
-  final dbHelper = DBHelper();
+  final DBHelper dbHelper = DBHelper();
   final apiService = ApiService();
 
   Future<void> sincronizarProdutos() async {

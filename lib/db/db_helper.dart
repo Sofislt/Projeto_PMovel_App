@@ -5,7 +5,7 @@ import 'dart:async';
 class DBHelper {
   Future<Database> initDB() async {
     String path = await getDatabasesPath();
-    String dbName = 'mareo.db';
+    String dbName = 'mare.db';
 
     // C:/aqrquivos/caminhoDoBanco/mare.db
     String dbPath = join(path, dbName);
@@ -42,14 +42,17 @@ class DBHelper {
       nome TEXT NOT NULL,
       descricao TEXT,
       preco REAL NOT NULL,
-      imagem TEXT
+      categoria TEXT,
+      imagem TEXT,
+      nota REAL,
+      votos INTEGER
       );
     ''');
 
     await db.execute('''
       CREATE TABLE Desejo (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      ProdutoId INTEGER NOT NULL,
+      produtoId INTEGER,
       FOREIGN KEY(produtoId) REFERENCES Produto(id)
       );
     ''');
@@ -60,7 +63,6 @@ class DBHelper {
       frases TEXT
       );
     ''');
-
 
     await db.insert('TaskCard', {
       'titulo': 'Ler o roteiro da feira literária',
@@ -128,5 +130,48 @@ class DBHelper {
       'Se você pode sonhar, você pode realizar.',
       'A melhor maneira de prever o futuro é criá-lo.'
     ];
+  }
+
+  // ---------------- PRODUTOS -----------------
+  Future<void> limparProdutos() async {
+    final db = await initDB();
+    await db.delete('Produto');
+  }
+
+  Future<void> inserirProduto(Map<String, dynamic> produto) async {
+    final db = await initDB();
+    await db.insert('Produto', produto,
+        conflictAlgorithm: ConflictAlgorithm.replace);
+  }
+
+  Future<List<Map<String, dynamic>>> getProdutos() async {
+    final db = await initDB();
+    return await db.query('Produto');
+  }
+
+  // ---------------- WISHLIST -----------------
+  Future<void> adicionarDesejo(int produtoId) async {
+    final db = await initDB();
+    await db.insert('Desejo', {'produtoId': produtoId});
+  }
+
+  Future<void> removerDesejo(int produtoId) async {
+    final db = await initDB();
+    await db.delete('Desejo', where: 'produtoId = ?', whereArgs: [produtoId]);
+  }
+
+  Future<bool> isFavorito(int produtoId) async {
+    final db = await initDB();
+    final result = await db.query('Desejo',
+        where: 'produtoId = ?', whereArgs: [produtoId]);
+    return result.isNotEmpty;
+  }
+
+  Future<List<Map<String, dynamic>>> getDesejos() async {
+    final db = await initDB();
+    return await db.rawQuery('''
+      SELECT Produto.* FROM Produto
+      INNER JOIN Desejo ON Produto.id = Desejo.produtoId
+      ''');
   }
 }

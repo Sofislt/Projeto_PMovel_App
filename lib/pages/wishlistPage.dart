@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../db/db_helper.dart';
+import 'package:projetofelype/db/db_helper.dart';
 
 class WishlistPage extends StatefulWidget {
   const WishlistPage({super.key});
@@ -16,10 +16,10 @@ class _WishlistPageState extends State<WishlistPage> {
   @override
   void initState() {
     super.initState();
-    carregarDesejos();
+    carregarDesejos(dbHelper);
   }
 
-  Future<void> carregarDesejos() async {
+  Future<void> carregarDesejos(dbHelper) async {
     final lista = await dbHelper.getDesejos();
     setState(() {
       desejos = lista;
