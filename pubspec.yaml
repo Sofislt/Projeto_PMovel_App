@@ -43,6 +43,7 @@ dependencies:
   path:
   dio:
   table_calendar:
+  google_maps_flutter:
 
 dev_dependencies:
   flutter_test:
