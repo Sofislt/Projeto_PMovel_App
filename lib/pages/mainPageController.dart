@@ -14,6 +14,9 @@ import 'pomodoroPage.dart';
 
 import 'lojaRoupinhasPage.dart';
 
+import 'package:projetofelype/db/shared_prefs.dart';
+import 'package:projetofelype/pages/loginPage.dart';
+
 class MainPageController extends StatefulWidget {
   const MainPageController({super.key});
 
@@ -363,7 +366,17 @@ class menuNavigationDrawer extends StatelessWidget {
             'Log out',
             style: TextStyle(color: Color(0xFFFFFFFF)),
           ),
-          onTap: () {},
+          onTap: () {
+            SharedPrefs().setUserStatus(false);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return LoginPage();
+                },
+              ),
+            );
+          },
         ),
         Divider(color: Color(0xFFFFFFFF)),
       ],

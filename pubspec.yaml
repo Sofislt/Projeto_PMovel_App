@@ -43,6 +43,7 @@ dependencies:
   path:
   dio:
   table_calendar:
+  shared_preferences:
 
 dev_dependencies:
   flutter_test:
