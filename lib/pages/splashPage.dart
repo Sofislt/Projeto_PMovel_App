@@ -1,6 +1,10 @@
 import 'package:projetofelype/db/shared_prefs.dart';
 import 'package:projetofelype/pages/mainPageController.dart';
 import 'package:projetofelype/pages/loginPage.dart';
+import 'package:projetofelype/api/user_api.dart';
+import 'package:projetofelype/Domain/user.dart';
+import 'package:projetofelype/providers/profile_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -19,8 +23,13 @@ class _SplashPageState extends State<SplashPage> {
 
   Future<void> checkStatus() async {
     await Future.delayed(Duration(seconds: 3));
-    bool status = await SharedPrefs().getUserStatus();
-    if (status) {
+    int userId = await SharedPrefs().getUserID();
+
+    if (userId != 0){
+      User? user = await UserApi().findById(userId);
+      ProfileProvider provider = context.read<ProfileProvider>();
+      provider.setUser(user);
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

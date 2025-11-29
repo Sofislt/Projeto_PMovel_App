@@ -6,6 +6,7 @@ import 'package:projetofelype/Widgets/QuoteCard.dart';
 import 'package:projetofelype/Domain/frase.dart';
 import 'package:projetofelype/api/frase_api.dart';
 import 'package:projetofelype/api/frases_fake_api.dart';
+import 'package:projetofelype/pages/profilePage.dart';
 
 import 'homePage.dart';
 import 'estatisticasPage.dart';
@@ -16,6 +17,13 @@ import 'lojaRoupinhasPage.dart';
 
 import 'package:projetofelype/db/shared_prefs.dart';
 import 'package:projetofelype/pages/loginPage.dart';
+
+import 'package:projetofelype/api/user_api.dart';
+import 'package:projetofelype/Domain/user.dart';
+import 'package:projetofelype/pages/profilePage.dart';
+import 'package:projetofelype/providers/profile_provider.dart';
+import 'package:provider/provider.dart';
+import 'dart:async';
 
 class MainPageController extends StatefulWidget {
   const MainPageController({super.key});
@@ -326,7 +334,23 @@ class menuNavigationDrawer extends StatelessWidget {
             'Usuario',
             style: TextStyle(color: Color(0xFFFFFFFF)),
           ),
-          onTap: () {},
+          onTap: () async {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return ProfilePage();
+                },
+              ),
+
+            );
+            ProfileProvider provider = context.read<ProfileProvider>();
+
+            int id = provider.user.id == 1 ? 2 : 1;
+
+            User user = await UserApi().findById(id);
+            provider.setUser(user);
+          },
         ),
         Divider(color: Color(0xFFFFFFFF)),
         ListTile(

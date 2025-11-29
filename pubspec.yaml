@@ -44,6 +44,7 @@ dependencies:
   dio:
   table_calendar:
   shared_preferences:
+  provider:
 
 dev_dependencies:
   flutter_test:

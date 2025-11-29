@@ -4,6 +4,10 @@ import 'package:projetofelype/db/user_dao.dart';
 import 'package:projetofelype/pages/mainPageController.dart';
 import 'package:flutter/material.dart';
 import 'package:projetofelype/pages/registerPage.dart';
+import 'package:projetofelype/api/user_api.dart';
+import 'package:projetofelype/Domain/user.dart';
+import 'package:projetofelype/providers/profile_provider.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -74,11 +78,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> onPressed() async {
-    String user = userController.text;
+    String username = userController.text;
     String password = passwordController.text;
-    bool auth = await UserDao().login(user, password);
-    if (auth) {
-      SharedPrefs().setUserStatus(true);
+
+    User? user = await UserApi().login(username, password);
+
+    if (user != null) {
+      SharedPrefs().setUserId(user.id);
+      ProfileProvider provider = context.read<ProfileProvider>();
+      provider.setUser(user);
+      
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
