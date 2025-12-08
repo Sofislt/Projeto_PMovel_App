@@ -44,6 +44,7 @@ dependencies:
   dio:
   table_calendar:
   google_maps_flutter:
+  geocoding:
 
 dev_dependencies:
   flutter_test:
