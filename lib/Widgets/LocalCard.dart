@@ -32,9 +32,15 @@ class _LocalCardState extends State<LocalCard> {
             borderRadius: BorderRadius.circular(16),
             child: Image.network(local.urlImage),
           ),
-          SizedBox(height: 16,),
+          SizedBox(height: 16),
           Row(
-            //Informações da imagem
+            children: [
+              buildText(
+                  text: local.local,
+                  fontSize: 17.0,
+                  fontWeight: FontWeight.w600,
+              ),
+            ],
           ),
           Row(
             children: [
@@ -43,7 +49,9 @@ class _LocalCardState extends State<LocalCard> {
                 List<Location> locations = await locationFromAddress(local.local);
                 LatLng position = LatLng(locations[0].latitude, locations[0].longitude);
 
-                Navigator.push(context, MaterialPageRoute(
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
                     builder: (context) {
                       return mapPage(posicao: position);
                     },

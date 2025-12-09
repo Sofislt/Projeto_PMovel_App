@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:projetofelype/Domain/task.dart';
 import 'package:projetofelype/Widgets/LocalCard.dart';
 import 'package:projetofelype/Domain/Local.dart';
+import 'package:projetofelype/api/local_api.dart';
 import 'package:projetofelype/pages/homePage.dart';
+import 'package:projetofelype/pages/mapPage.dart';
 
 class PomodoroPage extends StatefulWidget {
   const PomodoroPage({super.key});
@@ -17,6 +19,11 @@ class _PomodoroPageState extends State<PomodoroPage> {
   @override
   void initState() {
     super.initState();
+    loadData();
+  }
+
+  loadData() async {
+    futurelistaLocais = LocaisApi().findAll();
   }
 
   @override
@@ -47,4 +54,6 @@ class _PomodoroPageState extends State<PomodoroPage> {
       },
     );
   }
+
 }
+

@@ -11,6 +11,7 @@ import 'homePage.dart';
 import 'estatisticasPage.dart';
 import 'calendarPage.dart';
 import 'pomodoroPage.dart';
+import 'mapPage.dart';
 
 import 'lojaRoupinhasPage.dart';
 
